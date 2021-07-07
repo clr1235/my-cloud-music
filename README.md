@@ -34,27 +34,3 @@
 }
 ```
 3. npm start 启动应用程序，然后按 F5 或单击绿色调试图标在 VS Code 中开始调试。你现在可以编辑代码，设置断点，更改代码，以及从编辑器调试新修改的代码。
-## 自动格式化代码
-Prettier 是一个固定的代码格式化程序，支持 JavaScript ，CSS 和 JSON 。使用 Prettier，你可以自动格式化你编写的代码，以确保项目中的代码风格。
-- 执行命令 ```npm install --save husky lint-staged prettier```进行安装
-- husky 使得使用 githooks 变得很容易，就好像它们是 npm 脚本一样。
-- lint-staged 允许我们在 git 中的 staged 文件上运行脚本。
-- prettier 的是我们将在提交运行之前的 JavaScript 格式化程序。
-- 接下来在 package.json 文件中添加 如下代码：
-```
-"husky": {
-    "hooks": {
-        "pre-commit": "lint-staged"
-    }
-}
-```
-- 然后在 package.json 文件中添加 lint-staged 配置，如下所示：
-```
-"lint-staged": {
-   "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
-        "prettier --single-quote --write",
-        "git add"
-   ]
-},
-```
-- 到此处，无论何时进行提交，Prettier 都会自动格式化已更改的文件。
