@@ -1,6 +1,6 @@
 ## npm eject之后 按需引入antd-mobile
 1. ```npm install antd-mobile --save```  ```npm install babel-plugin-import --save-dev```
-2. 在package.json文件的 babel 配置项下加入 
+2. 在package.json文件的 babel 配置项下加入
 ```
     "plugins": [
         [
