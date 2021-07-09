@@ -1,7 +1,6 @@
 {
-  "css.validate": false,
   "editor.rulers": [
-    140
+    120
   ],
   "editor.tabSize": 2,
   "eslint.workingDirectories": [
@@ -13,5 +12,4 @@
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,
   "files.trimTrailingWhitespace": true,
-  "scss.validate": false,
 }
