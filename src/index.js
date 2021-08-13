@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Provider } from "react-redux";
-import { WingBlank, NavBar, Icon } from "antd-mobile";
+import { WingBlank, NavBar, Icon, Flex } from "antd-mobile";
 import "lib-flexible";
 
 import reportWebVitals from "./reportWebVitals";
@@ -20,12 +20,13 @@ import "./index.css";
  * */
 
 const store = configureAppStore();
+const FlexItem = Flex.Item;
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <Router>
-        <div className="appRootBox">
+        <Flex className="main" direction="column" justify="between">
           <NavBar
             mode="light"
             icon={<Icon type="left" />}
@@ -34,23 +35,26 @@ ReactDOM.render(
               <Icon key="0" type="search" style={{ marginRight: "16px" }} />,
               <Icon key="1" type="ellipsis" />,
             ]}
+            className="nav"
           ></NavBar>
-          <WingBlank>
-            <div className="rootMain">
-              <Switch>
-                {routes.map(({ path, component, ...routes }) => {
-                  return (
-                    <Route
-                      key={path}
-                      path={path}
-                      component={component}
-                      {...routes}
-                    />
-                  );
-                })}
-              </Switch>
-            </div>
-          </WingBlank>
+          <FlexItem>
+            <WingBlank>
+              <div className="rootMain">
+                <Switch>
+                  {routes.map(({ path, component, ...routes }) => {
+                    return (
+                      <Route
+                        key={path}
+                        path={path}
+                        component={component}
+                        {...routes}
+                      />
+                    );
+                  })}
+                </Switch>
+              </div>
+            </WingBlank>
+          </FlexItem>
           <NavBar
             mode="dark"
             leftContent="Back"
@@ -58,10 +62,11 @@ ReactDOM.render(
               <Icon key="0" type="search" style={{ marginRight: "16px" }} />,
               <Icon key="1" type="ellipsis" />,
             ]}
+            className="nav"
           >
             NavBar
           </NavBar>
-        </div>
+        </Flex>
       </Router>
     </Provider>
   </React.StrictMode>,
