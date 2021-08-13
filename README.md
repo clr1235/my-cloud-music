@@ -53,3 +53,8 @@
 ## 配置别名 alias
 1. 在 config目录下的paths文件中，找到 module.exports 抛出的那一个对象，在其中可添加自己想要的路径
 2. 然后在webpack.config.js的resolve选项下的alias下添加你自定义的别名，比如 `'@': paths.appSrc`
+
+## less-loader报错问题
+`./src/index.less (./node_modules/css-loader/dist/cjs.js??ref--5-oneOf-8-1!./node_modules/postcss-loader/src??postcss!./node_modules/resolve-url-loader??ref--5-oneOf-8-3!./node_modules/less-loader/dist/cjs.js??ref--5-oneOf-8-4!./src/index.less)
+TypeError: this.getOptions is not a function`
+此报错是因为less-loader版本过高，和webpack4.+版本不兼容导致，需要将less-loader版本降至5.0.0

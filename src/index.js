@@ -11,7 +11,7 @@ import configureAppStore from "./store";
 
 import routes from "./router";
 
-import "./index.css";
+import "./index.less";
 
 /**
  * StrictMode 是一个用来检查项目中潜在问题的工具, 不会渲染任何可见的 UI。
@@ -39,7 +39,7 @@ ReactDOM.render(
           ></NavBar>
           <FlexItem>
             <WingBlank>
-              <div className="rootMain">
+              <div className="main_page_box">
                 <Switch>
                   {routes.map(({ path, component, ...routes }) => {
                     return (
