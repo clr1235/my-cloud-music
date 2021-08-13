@@ -56,9 +56,10 @@ function getAdditionalModulePaths(options = {}) {
  */
 function getWebpackAliases(options = {}) {
   const baseUrl = options.baseUrl;
-
   if (!baseUrl) {
-    return {};
+    return {
+
+    };
   }
 
   const baseUrlResolved = path.resolve(paths.appPath, baseUrl);

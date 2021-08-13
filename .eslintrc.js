@@ -6,7 +6,8 @@ module.exports = {
   ],
   env: { node: true, browser: true },
   rules: {
-    "no-unused-vars": 2,
+    "no-unused-vars": 1,
     "semi": 0,
+    "indent": [1, 2],
   }
 }
