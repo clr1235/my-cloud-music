@@ -14,7 +14,6 @@ function BottomTabBar() {
   const [selectedTab, setSelectedTab] = useState("faxian");
   const onChangeTab = (val) => {
     setSelectedTab(val);
-    console.log(val, "selectedTab------");
   };
   const tabs = [
     {
