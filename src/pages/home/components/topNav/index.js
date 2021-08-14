@@ -1,33 +1,55 @@
-import React, { useState } from "react";
-import { NavBar, Icon, InputItem } from "antd-mobile";
+import React, { useState, Fragment } from "react";
+import { NavBar, InputItem, Drawer } from "antd-mobile";
+
+import Sidebar from "../../sidebar";
 
 import styles from "./topNav.module.less";
 
 function TopNav() {
   const [searchText, setSearchText] = useState("");
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const onChangeSearchText = (val) => {
     setSearchText(val);
   };
+  // 抽屉开关
+  const changeDrawerOpen = () => {
+    setDrawerOpen((prevDrawerOpen) => !prevDrawerOpen);
+    console.log(drawerOpen);
+  };
   return (
-    <NavBar
-      mode="light"
-      icon={<i className="iconfont icon-mianbaoxie"></i>}
-      onLeftClick={() => console.log("onLeftClick")}
-      rightContent={<i className="iconfont icon-huatong"></i>}
-      className={styles.nav}
-    >
-      <div className={styles.top_nav_center}>
-        <i className="iconfont icon-search"></i>
-        <InputItem
-          className="search_box"
-          value={searchText}
-          maxLength={32}
-          placeholder="输入关键字进行搜索"
-          onChange={onChangeSearchText}
-        />
-      </div>
-    </NavBar>
+    <div className={styles.nav_box}>
+      <NavBar
+        mode="light"
+        icon={<i className="iconfont icon-mianbaoxie"></i>}
+        onLeftClick={changeDrawerOpen}
+        rightContent={<i className="iconfont icon-huatong"></i>}
+        className={styles.nav}
+      >
+        <div className={styles.top_nav_center}>
+          <i className="iconfont icon-search"></i>
+          <InputItem
+            className="search_box"
+            value={searchText}
+            maxLength={32}
+            placeholder="输入关键字进行搜索"
+            onChange={onChangeSearchText}
+          />
+        </div>
+      </NavBar>
+      <Drawer
+        className={styles.my_drawer}
+        style={{ minHeight: document.documentElement.clientHeight }}
+        enableDragHandle
+        contentStyle={{ color: "#A6A6A6", textAlign: "center", paddingTop: 42 }}
+        sidebar={<Sidebar />}
+        // open={drawerOpen}
+        docked={drawerOpen}
+        // onOpenChange={changeDrawerOpen}
+      >
+        <div></div>
+      </Drawer>
+    </div>
   );
 }
 
