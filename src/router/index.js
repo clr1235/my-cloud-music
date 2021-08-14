@@ -1,31 +1,17 @@
-import loadable from "@loadable/component";
+import React, { Suspense } from "react";
+import { BrowserRouter } from "react-router-dom";
+import { renderRoutes } from "react-router-config";
 
-// 使用 @loadable/component 进行动态加载
-const Home = loadable(() => import("@/pages/home"));
-const About = loadable(() => import("@/pages/about"));
-const Users = loadable(() => import("@/pages/users"));
-const NotFound = loadable(() => import("@/pages/404"));
+import allRoutes from "./routes";
 
-const routes = [
-  {
-    path: "/",
-    component: Home,
-    exact: true,
-  },
-  {
-    path: "/about",
-    component: About,
-    exact: true,
-  },
-  {
-    path: "/users",
-    component: Users,
-    exact: true,
-  },
-  {
-    path: "*",
-    component: NotFound,
-  },
-];
+const Router = () => {
+  return (
+    <BrowserRouter>
+      <Suspense fallback={<div>loading...</div>}>
+        {renderRoutes(allRoutes)}
+      </Suspense>
+    </BrowserRouter>
+  );
+};
 
-export default routes;
+export default Router;

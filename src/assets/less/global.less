@@ -1,0 +1,30 @@
+// 引入全局的重置样式
+@import 'normalize.css';
+// 引入iconfont 样式
+@import '@/assets/icon/iconfont.css';
+// 引入全局变量
+@import './variables.less';
+
+
+html {
+  height: 100%;
+}
+body {
+  margin: 0;
+  height: 100%;
+  color: @gray-10;
+  font-size: @font14;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+  'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+  'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 布局样式 */
+#root {
+  height: 100%;
+}
+.main_page_box {
+  height: 100%;
+}

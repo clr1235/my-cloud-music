@@ -1,13 +1,14 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Flex } from "antd-mobile";
 
-import {
-  decrement,
-  increment,
-  // incrementByAmount,
-} from "@/store/slices";
+// 组件
+import TopNav from "./components/topNav";
+import BottomTabBar from "./components/bottomTabBar";
 
-function App() {
+import styles from "./index.module.less";
+
+function Home() {
   const state = useSelector((state) => {
     return state;
   });
@@ -15,13 +16,11 @@ function App() {
 
   console.log(state, "");
   return (
-    <div className="app">
-      哈哈哈哈
-      <div>{state.value}</div>
-      <button onClick={() => dispatch(increment())}>+</button>
-      <button onClick={() => dispatch(decrement())}>-</button>
-    </div>
+    <Flex className={styles.main} direction="column" justify="between">
+      <TopNav />
+      <BottomTabBar />
+    </Flex>
   );
 }
 
-export default App;
+export default Home;
