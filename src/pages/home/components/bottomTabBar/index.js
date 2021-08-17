@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { TabBar } from "antd-mobile";
 import loadable from "@loadable/component";
 
-import styles from "./bottomTabBar.module.less";
+import styles from "./index.module.less";
 
 const Find = loadable(() => import("@/pages/home/find"));
 const Boke = loadable(() => import("@/pages/home/boke"));
@@ -53,21 +53,23 @@ function BottomTabBar() {
     },
   ];
   return (
-    <TabBar className={styles.tab_bar} tintColor="#f5222d">
-      {tabs.map((item) => {
-        return (
-          <TabBar.Item
-            {...item}
-            selected={selectedTab === item.key}
-            onPress={() => {
-              onChangeTab(item.key);
-            }}
-          >
-            <item.component />
-          </TabBar.Item>
-        );
-      })}
-    </TabBar>
+    <div className={styles.tab_bar}>
+      <TabBar tintColor="#f5222d">
+        {tabs.map((item) => {
+          return (
+            <TabBar.Item
+              {...item}
+              selected={selectedTab === item.key}
+              onPress={() => {
+                onChangeTab(item.key);
+              }}
+            >
+              <item.component />
+            </TabBar.Item>
+          );
+        })}
+      </TabBar>
+    </div>
   );
 }
 

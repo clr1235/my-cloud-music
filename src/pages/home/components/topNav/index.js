@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState } from "react";
 import { NavBar, InputItem, Drawer } from "antd-mobile";
 
 import Sidebar from "../../sidebar";
@@ -39,13 +39,14 @@ function TopNav() {
       </NavBar>
       <Drawer
         className={styles.my_drawer}
-        style={{ minHeight: document.documentElement.clientHeight }}
+        style={{
+          minHeight: `${document.documentElement.clientHeight - 146}px`,
+        }}
         enableDragHandle
-        contentStyle={{ color: "#A6A6A6", textAlign: "center", paddingTop: 42 }}
+        contentStyle={{ display: "none" }}
         sidebar={<Sidebar />}
-        // open={drawerOpen}
-        docked={drawerOpen}
-        // onOpenChange={changeDrawerOpen}
+        open={drawerOpen}
+        onOpenChange={changeDrawerOpen}
       >
         <div></div>
       </Drawer>

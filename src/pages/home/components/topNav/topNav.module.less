@@ -38,9 +38,23 @@
   }
 }
 
-
+// 抽屉样式
 .my_drawer {
   position: relative;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  height: calc(100% - 48px);
+  :global {
+    .am-drawer-sidebar {
+      background-color: #fff;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .am-drawer-sidebar .am-list {
+      width: 300px;
+      padding: 0;
+    }
+  }
 }
 
 :global {

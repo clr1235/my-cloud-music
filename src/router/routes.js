@@ -2,6 +2,8 @@ import loadable from "@loadable/component";
 
 // 使用 @loadable/component 进行动态加载
 const Home = loadable(() => import("@/pages/home"));
+const About = loadable(() => import("@/pages/about"));
+const Users = loadable(() => import("@/pages/users"));
 const NotFound = loadable(() => import("@/pages/404"));
 
 const allRoutes = [

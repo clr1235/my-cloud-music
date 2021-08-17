@@ -1,6 +1,5 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Flex } from "antd-mobile";
 
 // 组件
 import TopNav from "./components/topNav";
@@ -16,10 +15,14 @@ function Home() {
 
   console.log(state, "");
   return (
-    <Flex className={styles.main} direction="column" justify="between">
+    // <div className={styles.main} direction="column" justify="between">
+    //   <TopNav />
+    //   <BottomTabBar />
+    // </div>
+    <Fragment>
       <TopNav />
       <BottomTabBar />
-    </Flex>
+    </Fragment>
   );
 }
 
