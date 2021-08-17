@@ -1,3 +1,37 @@
+@import '../../../assets/less/variables.less';
 .sidebar_box {
-  width: 300px;
+  box-sizing: border-box;
+  background-color: @gray-4;
+  height: 100%;
+  color: #262626;
+  .title {
+    :global {
+      .iconfont {
+        font-size: 16px;
+        margin-right: 10px;
+      }
+    }
+  }
+  .btn {
+    color: @red-6;
+  }
+  :global {
+    .am-card-body {
+      padding-top: 6px;
+    }
+    .am-card-header-content {
+      font-size: 12px;
+      color: @gray-7;
+    }
+    .am-list-body {
+      background-color: @gray-4;
+    }
+    .am-list-item {
+      padding-left: 0;
+      .am-list-line {
+        padding-right: 0;
+      }
+
+    }
+  }
 }

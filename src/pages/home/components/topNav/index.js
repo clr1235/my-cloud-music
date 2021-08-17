@@ -44,6 +44,7 @@ function TopNav() {
         }}
         enableDragHandle
         contentStyle={{ display: "none" }}
+        sidebarStyle={{ width: "80%" }}
         sidebar={<Sidebar />}
         open={drawerOpen}
         onOpenChange={changeDrawerOpen}
