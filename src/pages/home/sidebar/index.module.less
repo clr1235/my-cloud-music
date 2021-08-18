@@ -4,6 +4,30 @@
   background-color: @gray-4;
   height: 100%;
   color: #262626;
+  .person_info {
+    padding: 16px;
+    background-color: #fff;
+    position: sticky;
+    top: 0;
+    .box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: nowrap;
+      font-size: 14px;
+      .left {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: nowrap;
+        :global {
+          .iconfont {
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+  }
   .title {
     :global {
       .iconfont {
