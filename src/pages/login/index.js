@@ -1,7 +1,9 @@
 import React from "react";
 
+import styles from "./index.module.less";
+
 function Login() {
-  return <div>login页面</div>;
+  return <div className={styles.login_page}></div>;
 }
 
 export default Login;
