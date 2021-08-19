@@ -8,11 +8,9 @@ function Find() {
   useEffect(() => {
     const getJDList = async () => {
       const res = await fetchApi.FindPageApi.getJDList({ rid: 336355127 });
-      console.log(res.data, " res");
       setData(res.data);
     };
     getJDList();
-    console.log(data, "data----");
   }, []);
   return (
     <div className="find">

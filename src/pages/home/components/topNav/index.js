@@ -15,7 +15,6 @@ function TopNav() {
   // 抽屉开关
   const changeDrawerOpen = () => {
     setDrawerOpen((prevDrawerOpen) => !prevDrawerOpen);
-    console.log(drawerOpen);
   };
   return (
     <div className={styles.nav_box}>
