@@ -15,16 +15,6 @@ function Home(props) {
   console.log(props, "state---store对象");
   // const dispatch = useDispatch();
 
-  // const [loginData, setLoginData] = useState({});
-  // const status = useSelector(state => state.login.status)
-  // useEffect 获取登录状态
-
-  // useEffect(() => {
-  //   if (status === 'idle') {
-  //     dispatch(fetchLoginStatus())
-  //   }
-  // }, [status, dispatch])
-
   return (
     <Fragment>
       <TopNav />
