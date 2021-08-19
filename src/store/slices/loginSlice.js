@@ -7,7 +7,8 @@ export const fetchLoginStatus = createAsyncThunk(
   "login/fetchLoginStatus",
   async () => {
     const res = await fetchApi.LoginPageApi.getLoginStatus();
-    return res.data;
+    console.log(res.data.data, "0-0-0-0-0-0");
+    return res.data.data;
   }
 );
 
