@@ -9,5 +9,7 @@ module.exports = {
     "no-unused-vars": 1,
     "semi": 0,
     "indent": [1, 2],
+    // 允许默认到处 {}
+    "import/no-anonymous-default-export": 0,
   }
 }

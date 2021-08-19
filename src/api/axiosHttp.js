@@ -1,5 +1,23 @@
 import axios from "axios";
 
+export function handledGetParams(params) {
+  let arr = [];
+  if (Object.prototype.toString.call(params) !== "[object Object]") {
+    return "";
+  }
+  const keys = Object.keys(params);
+  if (keys.length === 0) {
+    return "";
+  }
+  for (let key of keys) {
+    let item = `${key}=${params[key]}`;
+    if (!arr.includes(item)) {
+      arr.push(item);
+    }
+  }
+  return `?${arr.join("&")}`;
+}
+
 // 添加请求拦截器
 axios.interceptors.request.use(
   function (config) {
@@ -40,6 +58,7 @@ function getBaseURL(env) {
 // 创建axios的实例
 function axiosHttp(axiosConfig) {
   const service = axios.create({
+    baseURL: "/api",
     timeout: 30000,
     ...axiosConfig,
   });
