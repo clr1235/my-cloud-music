@@ -3,11 +3,11 @@ import fetchApi from "@/api";
 
 const initialState = {};
 
+// 获取登录状态
 export const fetchLoginStatus = createAsyncThunk(
   "login/fetchLoginStatus",
   async () => {
     const res = await fetchApi.LoginPageApi.getLoginStatus();
-    console.log(res.data.data, "0-0-0-0-0-0");
     return res.data.data;
   }
 );

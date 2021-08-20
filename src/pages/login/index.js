@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Button, InputItem, Toast } from "antd-mobile";
 import { createForm } from "rc-form";
 
+import fetchApi from "@/api";
+
 import styles from "./index.module.less";
 
 // 通过自定义 moneyKeyboardWrapProps 修复虚拟键盘滚动穿透问题
@@ -19,15 +21,63 @@ function Login(props) {
   // 定义state
   const [state, setState] = useState({
     phone: "",
-    verification_code: "",
+    captcha: "",
+    codeBtnLoading: false,
   });
+  // onchange
+  const onChange = (val, type) => {
+    if (type === "phone") {
+      setState({ ...state, phone: val });
+    }
+    if (type === "captcha") {
+      setState({ ...state, captcha: val });
+    }
+  };
   // 表单校验所需方法
   const { getFieldProps, getFieldError } = props.form;
+  // 发送验证码
+  const sendCaptcha = async () => {
+    if (state.phone) {
+      setState({ ...state, codeBtnLoading: true });
+      await fetchApi.LoginPageApi.sendCaptcha({
+        phone: state.phone.replace(/\s*/g, ""),
+      });
+      setState({ ...state, codeBtnLoading: false });
+    }
+  };
+  // 验证验证码
+  const captchaVerify = async () => {
+    const fetchData = {
+      phone: state.phone.replace(/\s*/g, ""),
+      captcha: state.captcha,
+    };
+    const data = await fetchApi.LoginPageApi.captchaVerify(fetchData);
+    if (data) {
+      console.log(data, "-=-=-=-");
+    }
+  };
   // 表单提交
   const onSubmit = () => {
-    props.form.validateFields({ force: true }, (error) => {
+    props.form.validateFields({ force: true }, async (error) => {
       if (!error) {
-        console.log(props.form.getFieldsValue(), "hshshshsshsh");
+        const { phone, captcha } = props.form.getFieldsValue();
+        const phoneTemp = phone.replace(/\s*/g, "");
+        // 如果有验证码的话 先验证验证码
+        let captchaVerifyResult = null;
+        if (captcha) {
+          captchaVerifyResult = await captchaVerify();
+        }
+
+        if (captchaVerifyResult) {
+        }
+        const { data } = await fetchApi.LoginPageApi.checkPhone({
+          phone: phoneTemp,
+        });
+        // 手机号未被注册的话，进行注册
+        if (data.exist === -1) {
+        } else {
+          // 手机号注册过的，直接登录
+        }
       } else {
         console.log("Validation failed");
       }
@@ -51,6 +101,9 @@ function Login(props) {
             onErrorClick={() => {
               Toast.info(getFieldError("phone"), 1);
             }}
+            onChange={(val) => {
+              onChange(val, "phone");
+            }}
             placeholder="请输入手机号"
             className={styles.phone}
             clear
@@ -60,20 +113,26 @@ function Login(props) {
         <div className={styles.formItem}>
           <i className="iconfont icon-yanzhengma"></i>
           <InputItem
-            type="phone"
-            {...getFieldProps("verification_code", {
-              initialValue: state.verification_code,
+            {...getFieldProps("captcha", {
+              initialValue: state.captcha,
               rules: [{ required: true }],
             })}
-            error={!!getFieldError("verification_code")}
+            error={!!getFieldError("captcha")}
             onErrorClick={() => {
-              Toast.info(getFieldError("verification_code"), 1);
+              Toast.info(getFieldError("captcha"), 1);
+            }}
+            onChange={(val) => {
+              onChange(val, "captcha");
             }}
             placeholder="请输入验证码"
-            className={styles.verification_code}
+            className={styles.captcha}
             moneyKeyboardWrapProps={moneyKeyboardWrapProps}
             extra={
-              <Button className={styles.verification_code_btn}>
+              <Button
+                loading={state.codeBtnLoading}
+                className={styles.captcha_btn}
+                onClick={sendCaptcha}
+              >
                 获取验证码
               </Button>
             }
