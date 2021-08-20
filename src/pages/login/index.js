@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, InputItem } from "antd-mobile";
+import { Button, InputItem, Toast } from "antd-mobile";
 import { createForm } from "rc-form";
 
 import styles from "./index.module.less";
@@ -15,24 +15,23 @@ if (isIPhone) {
   };
 }
 
-function Login() {
+function Login(props) {
+  // 定义state
   const [state, setState] = useState({
     phone: "",
     verification_code: "",
   });
-  const onChange = (val, type) => {
-    if (type === "phone") {
-      setState({
-        ...state,
-        phone: val,
-      });
-    }
-    if (type === "code") {
-      setState({
-        ...state,
-        verification_code: val,
-      });
-    }
+  // 表单校验所需方法
+  const { getFieldProps, getFieldError } = props.form;
+  // 表单提交
+  const onSubmit = () => {
+    props.form.validateFields({ force: true }, (error) => {
+      if (!error) {
+        console.log(props.form.getFieldsValue(), "hshshshsshsh");
+      } else {
+        console.log("Validation failed");
+      }
+    });
   };
   return (
     <div className={styles.login_page}>
@@ -44,9 +43,13 @@ function Login() {
           <i className="iconfont icon-shouji"></i>
           <InputItem
             type="phone"
-            value={state.phone}
-            onChange={(val) => {
-              onChange(val, "phone");
+            {...getFieldProps("phone", {
+              initialValue: state.phone,
+              rules: [{ required: true }],
+            })}
+            error={!!getFieldError("phone")}
+            onErrorClick={() => {
+              Toast.info(getFieldError("phone"), 1);
             }}
             placeholder="请输入手机号"
             className={styles.phone}
@@ -58,9 +61,13 @@ function Login() {
           <i className="iconfont icon-yanzhengma"></i>
           <InputItem
             type="phone"
-            value={state.verification_code}
-            onChange={(val) => {
-              onChange(val, "code");
+            {...getFieldProps("verification_code", {
+              initialValue: state.verification_code,
+              rules: [{ required: true }],
+            })}
+            error={!!getFieldError("verification_code")}
+            onErrorClick={() => {
+              Toast.info(getFieldError("verification_code"), 1);
             }}
             placeholder="请输入验证码"
             className={styles.verification_code}
@@ -72,7 +79,14 @@ function Login() {
             }
           ></InputItem>
         </div>
-        <Button className={styles.login_btn}>登录/注册</Button>
+        <Button
+          className={styles.login_btn}
+          onClick={() => {
+            onSubmit();
+          }}
+        >
+          登录/注册
+        </Button>
       </div>
     </div>
   );
