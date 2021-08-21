@@ -1,3 +1,16 @@
+# 从零开始构建react-hooks + react-router-dom + reduxToolkit + antd-mobile的web端网易云app
+
+工欲善其事，必先利其器！
+万丈高楼平地起！
+舞台先搭起来！
+
+## 项目初始化
+1. 在空目录下 执行 `npx create-react-app my-app --template redux`，此命令将会生成一个带有 `reduxToolkit` 的 `create-react-app` 架子的 `my-app` 项目。
+2.
+
+
+
+
 ## npm eject之后 按需引入antd-mobile
 1. ```npm install antd-mobile --save```  ```npm install babel-plugin-import --save-dev```
 2. 在package.json文件的 babel 配置项下加入
