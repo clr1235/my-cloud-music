@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, InputItem, Toast } from "antd-mobile";
-import { createForm } from "rc-form";
+import { useForm, Controller } from "react-hook-form";
 
 import fetchApi from "@/api";
-
 import styles from "./index.module.less";
 
 // 通过自定义 moneyKeyboardWrapProps 修复虚拟键盘滚动穿透问题
@@ -20,29 +19,43 @@ if (isIPhone) {
 function Login(props) {
   // 定义state
   const [state, setState] = useState({
+    // 手机号
     phone: "",
+    // 验证码
     captcha: "",
+    // 密码
     password: "",
-    rePassword: "",
+    // 昵称
+    nickname: "",
+    // 手机号是否被注册
+    phoneUnRegister: false,
     codeBtnLoading: false,
   });
-  // onchange
-  const onChange = (val, type) => {
-    if (type === "phone") {
-      setState({ ...state, phone: val });
-    }
-    if (type === "captcha") {
-      setState({ ...state, captcha: val });
-    }
-    if (type === "password") {
-      setState({ ...state, password: val });
-    }
-    if (type === "rePassword") {
-      setState({ ...state, rePassword: val });
+
+  // 手机号输入框失去焦点时校验 手机号
+  const onBlur = async (val) => {
+    const { data } = await fetchApi.LoginPageApi.checkPhone({
+      phone: state.phone.replace(/\s*/g, ""),
+    });
+    // 手机号未被注册的话，进行注册
+    if (data.exist === -1) {
+      setState({ ...state, phoneUnRegister: true });
+    } else {
+      setState({ ...state, phoneUnRegister: false });
+      // 手机号注册过的，直接登录
     }
   };
   // 表单校验所需方法
-  const { getFieldProps, getFieldError } = props.form;
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
+    mode: "all",
+    defaultValues: state,
+    reValidateMode: "onChange",
+  });
+
   // 自定义密码规则校验
   const validateRePassword = (rule, value, callback) => {
     if (value && value === state.password) {
@@ -78,149 +91,148 @@ function Login(props) {
       phone: state.phone.replace(/\s*/g, ""),
       captcha: state.captcha,
     };
-    const data = await fetchApi.LoginPageApi.captchaVerify(fetchData);
+    const { data } = await fetchApi.LoginPageApi.captchaVerify(fetchData);
     return data;
   };
-  // 登录逻辑
+  // 登录
   const login = async () => {
-    const { data } = await fetchApi.LoginPageApi.checkPhone({
-      phone: state.phone.replace(/\s*/g, ""),
-    });
-    // 手机号未被注册的话，进行注册
-    if (data.exist === -1) {
-    } else {
-      // 手机号注册过的，直接登录
-    }
+    const { phone, password } = state;
+    const fetchData = {
+      phone: phone.replace(/\s*/g, ""),
+      password,
+    };
+    const res = await fetchApi.LoginPageApi.login(fetchData);
+    console.log(res, "res----");
   };
-  // 表单提交
-  const onSubmit = () => {
-    props.form.validateFields({ force: true }, async (error) => {
-      if (!error) {
-        const { captcha } = props.form.getFieldsValue();
-        // 如果有验证码的话 先验证验证码，走验证码登录
-        if (captcha) {
-          const captchaVerifyResult = await captchaVerify();
-          // 验证通过之后进行下一步操作
-          if (captchaVerifyResult.code === 200) {
-            login();
-          }
-        } else {
-          // 账号密码登录
-          login();
-        }
-      } else {
-        console.log("Validation failed");
-      }
-    });
+  // 注册
+  const handleRegister = async () => {
+    const { captcha, phone, password, nickname } = state;
+    const fetchData = {
+      captcha,
+      phone: phone.replace(/\s*/g, ""),
+      password,
+      nickname,
+    };
+    const res = await fetchApi.LoginPageApi.register(fetchData);
   };
+
+  // 表单提交 分注册和登录
+  const onSubmit = async (data) => {
+    console.log(data, "data=-=-=-=-=");
+  };
+
+  const toastFn = (msg) => {
+    return Toast.fail(msg, 3);
+  };
+
   return (
     <div className={styles.login_page}>
       <div className={styles.logo}>
         <i className="iconfont icon-wangyiyun"></i>
       </div>
-      <div className={styles.form}>
-        <div className={styles.formItem}>
-          <i className="iconfont icon-shouji"></i>
-          <InputItem
-            type="phone"
-            {...getFieldProps("phone", {
-              initialValue: state.phone,
-              rules: [{ required: true }],
-            })}
-            error={!!getFieldError("phone")}
-            onErrorClick={() => {
-              Toast.info("请输入正确的手机号！", 1);
-            }}
-            onChange={(val) => {
-              onChange(val, "phone");
-            }}
-            placeholder="请输入手机号"
-            className={styles.phone}
-            clear
-            moneyKeyboardWrapProps={moneyKeyboardWrapProps}
-          ></InputItem>
-        </div>
-        <div className={styles.formItem}>
-          <i className="iconfont icon-mima"></i>
-          <InputItem
-            {...getFieldProps("password", {
-              initialValue: state.password,
-              rules: [{ validator: validatePassword }],
-            })}
-            error={!!getFieldError("password")}
-            onErrorClick={() => {
-              Toast.info(getFieldError("password"), 1);
-            }}
-            onChange={(val) => {
-              onChange(val, "password");
-            }}
-            clear
-            placeholder="请输入密码"
-            className={styles.phone}
-            moneyKeyboardWrapProps={moneyKeyboardWrapProps}
-          ></InputItem>
-        </div>
-        {state.password && (
+      <form className={styles.form}>
+        {/* 昵称 */}
+        {state.phoneUnRegister && (
           <div className={styles.formItem}>
-            <i className="iconfont icon-mima"></i>
-            <InputItem
-              {...getFieldProps("rePassword", {
-                initialValue: state.rePassword,
-                rules: [{ validator: validateRePassword }],
-              })}
-              error={!!getFieldError("rePassword")}
-              onErrorClick={() => {
-                Toast.info(getFieldError("rePassword"), 1);
-              }}
-              onChange={(val) => {
-                onChange(val, "rePassword");
-              }}
-              clear
-              placeholder="请再次输入密码"
-              className={styles.phone}
-              moneyKeyboardWrapProps={moneyKeyboardWrapProps}
-            ></InputItem>
+            <i className="iconfont icon-nicheng"></i>
+            <Controller
+              control={control}
+              name="nickname"
+              rules={{ required: true }}
+              render={({ field }) => (
+                <InputItem
+                  {...field}
+                  placeholder="请输入昵称"
+                  className={styles.phone}
+                  clear
+                  moneyKeyboardWrapProps={moneyKeyboardWrapProps}
+                ></InputItem>
+              )}
+            ></Controller>
           </div>
         )}
-        {/* <div className={styles.formItem}>
+        {/* 手机号 */}
+        <div className={styles.formItem}>
+          <i className="iconfont icon-phone"></i>
+          <Controller
+            control={control}
+            name="phone"
+            rules={{
+              required: "请输入手机号",
+            }}
+            render={({ field }) => (
+              <InputItem
+                type="phone"
+                {...field}
+                placeholder="请输入手机号"
+                className={styles.phone}
+                clear
+                error={errors?.phone?.message}
+                onErrorClick={() => {
+                  Toast.fail(errors?.phone?.message, 2);
+                }}
+                moneyKeyboardWrapProps={moneyKeyboardWrapProps}
+              ></InputItem>
+            )}
+          ></Controller>
+        </div>
+        {/* 验证码 */}
+        <div className={styles.formItem}>
           <i className="iconfont icon-yanzhengma"></i>
-          <InputItem
-            {...getFieldProps("captcha", {
-              initialValue: state.captcha,
-              rules: [{ required: true }],
-            })}
-            error={!!getFieldError("captcha")}
-            onErrorClick={() => {
-              Toast.info(getFieldError("captcha"), 1);
-            }}
-            onChange={(val) => {
-              onChange(val, "captcha");
-            }}
-            placeholder="请输入验证码"
-            className={styles.captcha}
-            moneyKeyboardWrapProps={moneyKeyboardWrapProps}
-            extra={
-              <Button
-                loading={state.codeBtnLoading}
-                className={styles.captcha_btn}
-                onClick={sendCaptcha}
-              >
-                获取验证码
-              </Button>
-            }
-          ></InputItem>
-        </div> */}
+          <Controller
+            control={control}
+            name="captcha"
+            rules={{ required: true }}
+            render={({ field }) => (
+              <InputItem
+                {...field}
+                placeholder="请输入验证码"
+                className={styles.captcha}
+                clear
+                extra={
+                  <Button
+                    loading={state.codeBtnLoading}
+                    className={styles.captcha_btn}
+                    onClick={sendCaptcha}
+                  >
+                    获取验证码
+                  </Button>
+                }
+                moneyKeyboardWrapProps={moneyKeyboardWrapProps}
+              ></InputItem>
+            )}
+          ></Controller>
+        </div>
+        {/* 密码 */}
+        <div className={styles.formItem}>
+          <i className="iconfont icon-mima"></i>
+          <Controller
+            control={control}
+            name="password"
+            rules={{ required: true }}
+            render={({ field }) => (
+              <InputItem
+                type="password"
+                {...field}
+                placeholder="请输入密码"
+                className={styles.phone}
+                clear
+                moneyKeyboardWrapProps={moneyKeyboardWrapProps}
+              ></InputItem>
+            )}
+          ></Controller>
+        </div>
         <Button
           className={styles.login_btn}
-          onClick={() => {
-            onSubmit();
-          }}
+          onClick={handleSubmit((data) => {
+            onSubmit(data);
+          })}
         >
-          登录/注册
+          {state.phoneUnRegister ? "注册" : "登录"}
         </Button>
-      </div>
+      </form>
     </div>
   );
 }
 
-export default createForm()(Login);
+export default Login;

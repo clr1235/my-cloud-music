@@ -104,6 +104,7 @@ module.exports = function (proxy, allowedHost) {
     proxy: {
       "/api": {
         target: 'https://netease-cloud-music-api-zeta-liart.vercel.app',
+        // target: 'http://localhost:3000',
         changeOrigin: true,
         pathRewrite: {"^/api" : ""}
       }
