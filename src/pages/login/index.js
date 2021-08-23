@@ -31,9 +31,20 @@ function Login(props) {
     phoneUnRegister: false,
     codeBtnLoading: false,
   });
+  // 表单校验所需方法
+  const {
+    handleSubmit,
+    control,
+    getValues,
+    formState: { errors },
+  } = useForm({
+    mode: "all",
+    defaultValues: state,
+    reValidateMode: "onChange",
+  });
 
-  // 手机号输入框失去焦点时校验 手机号
-  const onBlur = async (val) => {
+  // 校验 手机号 是否注册
+  const checkPhone = async (val) => {
     const { data } = await fetchApi.LoginPageApi.checkPhone({
       phone: state.phone.replace(/\s*/g, ""),
     });
@@ -45,58 +56,28 @@ function Login(props) {
       // 手机号注册过的，直接登录
     }
   };
-  // 表单校验所需方法
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm({
-    mode: "all",
-    defaultValues: state,
-    reValidateMode: "onChange",
-  });
 
-  // 自定义密码规则校验
-  const validateRePassword = (rule, value, callback) => {
-    if (value && value === state.password) {
-      callback();
-    } else if (value.length === 0) {
-      callback(new Error("请再次输入密码"));
-    } else {
-      callback(new Error("两次输入密码不一致"));
-    }
-  };
-  const validatePassword = (rule, value, callback) => {
-    if (value && value.length >= 8) {
-      callback();
-    } else if (value.length === 0) {
-      callback(new Error("请输入密码"));
-    } else {
-      callback(new Error("请输入至少8位密码"));
-    }
-  };
   // 发送验证码
   const sendCaptcha = async () => {
-    if (state.phone) {
-      setState({ ...state, codeBtnLoading: true });
+    const phone = getValues("phone");
+    if (phone) {
       await fetchApi.LoginPageApi.sendCaptcha({
-        phone: state.phone.replace(/\s*/g, ""),
+        phone: phone.replace(/\s*/g, ""),
       });
-      setState({ ...state, codeBtnLoading: false });
     }
   };
   // 验证验证码
   const captchaVerify = async () => {
     const fetchData = {
-      phone: state.phone.replace(/\s*/g, ""),
-      captcha: state.captcha,
+      phone: getValues("phone").replace(/\s*/g, ""),
+      captcha: getValues("captcha"),
     };
     const { data } = await fetchApi.LoginPageApi.captchaVerify(fetchData);
     return data;
   };
   // 登录
   const login = async () => {
-    const { phone, password } = state;
+    const { phone, password } = getValues();
     const fetchData = {
       phone: phone.replace(/\s*/g, ""),
       password,
@@ -106,7 +87,7 @@ function Login(props) {
   };
   // 注册
   const handleRegister = async () => {
-    const { captcha, phone, password, nickname } = state;
+    const { captcha, phone, password, nickname } = getValues();
     const fetchData = {
       captcha,
       phone: phone.replace(/\s*/g, ""),
@@ -118,11 +99,8 @@ function Login(props) {
 
   // 表单提交 分注册和登录
   const onSubmit = async (data) => {
+    setState({ state: data });
     console.log(data, "data=-=-=-=-=");
-  };
-
-  const toastFn = (msg) => {
-    return Toast.fail(msg, 3);
   };
 
   return (
@@ -145,6 +123,10 @@ function Login(props) {
                   placeholder="请输入昵称"
                   className={styles.phone}
                   clear
+                  error={errors?.phone?.nickname}
+                  onErrorClick={() => {
+                    Toast.fail(errors?.phone?.nickname, 1);
+                  }}
                   moneyKeyboardWrapProps={moneyKeyboardWrapProps}
                 ></InputItem>
               )}
@@ -169,7 +151,7 @@ function Login(props) {
                 clear
                 error={errors?.phone?.message}
                 onErrorClick={() => {
-                  Toast.fail(errors?.phone?.message, 2);
+                  Toast.fail(errors?.phone?.message, 1);
                 }}
                 moneyKeyboardWrapProps={moneyKeyboardWrapProps}
               ></InputItem>
@@ -198,6 +180,10 @@ function Login(props) {
                     获取验证码
                   </Button>
                 }
+                error={errors?.phone?.password}
+                onErrorClick={() => {
+                  Toast.fail(errors?.phone?.password, 1);
+                }}
                 moneyKeyboardWrapProps={moneyKeyboardWrapProps}
               ></InputItem>
             )}
@@ -217,6 +203,10 @@ function Login(props) {
                 placeholder="请输入密码"
                 className={styles.phone}
                 clear
+                error={errors?.phone?.password}
+                onErrorClick={() => {
+                  Toast.fail(errors?.phone?.password, 1);
+                }}
                 moneyKeyboardWrapProps={moneyKeyboardWrapProps}
               ></InputItem>
             )}
