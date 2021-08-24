@@ -30,6 +30,8 @@ function Login(props) {
     // 手机号是否被注册
     phoneUnRegister: false,
     codeBtnLoading: false,
+    // 登录 注册 模式
+    mode: "login",
   });
   // 表单校验所需方法
   const {
@@ -97,6 +99,23 @@ function Login(props) {
     const res = await fetchApi.LoginPageApi.register(fetchData);
   };
 
+  const onChangeMode = () => {
+    setState((prevState) => {
+      if (prevState.mode === "login") {
+        return {
+          ...state,
+          mode: "register",
+        };
+      } else {
+        return {
+          ...state,
+          mode: "login",
+        };
+      }
+    });
+    console.log(state.mode, "mode=-=-=-");
+  };
+
   // 表单提交 分注册和登录
   const onSubmit = async (data) => {
     setState({ state: data });
@@ -111,7 +130,7 @@ function Login(props) {
       <div className={styles.form_box}>
         <form className={styles.form}>
           {/* 昵称 */}
-          {state.phoneUnRegister && (
+          {state.mode === "register" && (
             <div className={styles.formItem}>
               <i className="iconfont icon-nicheng"></i>
               <Controller
@@ -216,7 +235,9 @@ function Login(props) {
         </form>
         <div className={styles.desc_box}>
           <span>忘记密码？</span>
-          <span className={styles.register_btn}>注册</span>
+          <span className={styles.register_btn} onClick={onChangeMode}>
+            {state.mode === "login" ? "注册" : "登录"}
+          </span>
         </div>
         <Button
           type="primary"
@@ -225,7 +246,7 @@ function Login(props) {
             onSubmit(data);
           })}
         >
-          {state.phoneUnRegister ? "注册" : "登录"}
+          {state.mode === "login" ? "登录" : "注册"}
         </Button>
       </div>
     </div>
