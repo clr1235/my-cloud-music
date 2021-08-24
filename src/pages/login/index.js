@@ -136,16 +136,16 @@ function Login(props) {
               <Controller
                 control={control}
                 name="nickname"
-                rules={{ required: true }}
+                rules={{ required: "请输入昵称！" }}
                 render={({ field }) => (
                   <InputItem
                     {...field}
                     placeholder="请输入昵称"
                     className={styles.phone}
                     clear
-                    error={errors?.phone?.nickname}
+                    error={errors?.nickname?.message}
                     onErrorClick={() => {
-                      Toast.fail(errors?.phone?.nickname, 1);
+                      Toast.fail(errors?.nickname?.message, 1);
                     }}
                     moneyKeyboardWrapProps={moneyKeyboardWrapProps}
                   ></InputItem>
@@ -184,7 +184,7 @@ function Login(props) {
             <Controller
               control={control}
               name="captcha"
-              rules={{ required: true }}
+              rules={{ required: "请输入验证码！" }}
               render={({ field }) => (
                 <InputItem
                   {...field}
@@ -200,9 +200,9 @@ function Login(props) {
                       获取验证码
                     </Button>
                   }
-                  error={errors?.phone?.password}
+                  error={errors?.captcha?.message}
                   onErrorClick={() => {
-                    Toast.fail(errors?.phone?.password, 1);
+                    Toast.fail(errors?.captcha?.message, 1);
                   }}
                   moneyKeyboardWrapProps={moneyKeyboardWrapProps}
                 ></InputItem>
@@ -215,7 +215,7 @@ function Login(props) {
             <Controller
               control={control}
               name="password"
-              rules={{ required: true }}
+              rules={{ required: "请输入密码！" }}
               render={({ field }) => (
                 <InputItem
                   type="password"
@@ -223,9 +223,9 @@ function Login(props) {
                   placeholder="请输入密码"
                   className={styles.phone}
                   clear
-                  error={errors?.phone?.password}
+                  error={errors?.password?.message}
                   onErrorClick={() => {
-                    Toast.fail(errors?.phone?.password, 1);
+                    Toast.fail(errors?.password?.message, 1);
                   }}
                   moneyKeyboardWrapProps={moneyKeyboardWrapProps}
                 ></InputItem>
