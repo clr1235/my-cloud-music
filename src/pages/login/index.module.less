@@ -5,7 +5,7 @@
   padding: 16px;
   background-color: @volcano-7;
   .logo {
-    height: 40%;
+    height: 30%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -14,6 +14,22 @@
         color: #fff;
         font-size: 60px;
       }
+    }
+  }
+  .form_box {
+    background-color: #fff;
+    border-radius: 6px;
+    padding: 16px;
+    .desc_box {
+      padding: 10px 0;
+      .register_btn {
+        color: @volcano-7;
+      }
+    }
+    .login_btn {
+      border-radius: 32px;
+      margin-top: 60px;
+      background-color: @volcano-7;
     }
   }
   .form {
@@ -29,9 +45,9 @@
         }
       }
       .phone, .captcha {
-        border-radius: 32px;
         padding-left: 40px;
         margin-bottom: 16px;
+        border-bottom: 1px solid @gray-5;
       }
       .captcha {
         .captcha_btn {
@@ -48,6 +64,9 @@
           .am-input-extra {
             max-height: none;
             height: 100%;
+          }
+          .am-button-active {
+            background-color: transparent;
           }
         }
       }
@@ -68,10 +87,6 @@
           }
         }
       }
-    }
-    .login_btn {
-      border-radius: 32px;
-      margin-top: 60px;
     }
   }
 }

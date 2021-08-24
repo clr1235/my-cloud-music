@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button, InputItem, Toast } from "antd-mobile";
 import { useForm, Controller } from "react-hook-form";
 
@@ -108,111 +108,118 @@ function Login(props) {
       <div className={styles.logo}>
         <i className="iconfont icon-wangyiyun"></i>
       </div>
-      <form className={styles.form}>
-        {/* 昵称 */}
-        {state.phoneUnRegister && (
+      <div className={styles.form_box}>
+        <form className={styles.form}>
+          {/* 昵称 */}
+          {state.phoneUnRegister && (
+            <div className={styles.formItem}>
+              <i className="iconfont icon-nicheng"></i>
+              <Controller
+                control={control}
+                name="nickname"
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <InputItem
+                    {...field}
+                    placeholder="请输入昵称"
+                    className={styles.phone}
+                    clear
+                    error={errors?.phone?.nickname}
+                    onErrorClick={() => {
+                      Toast.fail(errors?.phone?.nickname, 1);
+                    }}
+                    moneyKeyboardWrapProps={moneyKeyboardWrapProps}
+                  ></InputItem>
+                )}
+              ></Controller>
+            </div>
+          )}
+          {/* 手机号 */}
           <div className={styles.formItem}>
-            <i className="iconfont icon-nicheng"></i>
+            <i className="iconfont icon-phone"></i>
             <Controller
               control={control}
-              name="nickname"
-              rules={{ required: true }}
+              name="phone"
+              rules={{
+                required: "请输入手机号",
+              }}
               render={({ field }) => (
                 <InputItem
+                  type="phone"
                   {...field}
-                  placeholder="请输入昵称"
+                  placeholder="请输入手机号"
                   className={styles.phone}
                   clear
-                  error={errors?.phone?.nickname}
+                  error={errors?.phone?.message}
                   onErrorClick={() => {
-                    Toast.fail(errors?.phone?.nickname, 1);
+                    Toast.fail(errors?.phone?.message, 1);
                   }}
                   moneyKeyboardWrapProps={moneyKeyboardWrapProps}
                 ></InputItem>
               )}
             ></Controller>
           </div>
-        )}
-        {/* 手机号 */}
-        <div className={styles.formItem}>
-          <i className="iconfont icon-phone"></i>
-          <Controller
-            control={control}
-            name="phone"
-            rules={{
-              required: "请输入手机号",
-            }}
-            render={({ field }) => (
-              <InputItem
-                type="phone"
-                {...field}
-                placeholder="请输入手机号"
-                className={styles.phone}
-                clear
-                error={errors?.phone?.message}
-                onErrorClick={() => {
-                  Toast.fail(errors?.phone?.message, 1);
-                }}
-                moneyKeyboardWrapProps={moneyKeyboardWrapProps}
-              ></InputItem>
-            )}
-          ></Controller>
-        </div>
-        {/* 验证码 */}
-        <div className={styles.formItem}>
-          <i className="iconfont icon-yanzhengma"></i>
-          <Controller
-            control={control}
-            name="captcha"
-            rules={{ required: true }}
-            render={({ field }) => (
-              <InputItem
-                {...field}
-                placeholder="请输入验证码"
-                className={styles.captcha}
-                clear
-                extra={
-                  <Button
-                    loading={state.codeBtnLoading}
-                    className={styles.captcha_btn}
-                    onClick={sendCaptcha}
-                  >
-                    获取验证码
-                  </Button>
-                }
-                error={errors?.phone?.password}
-                onErrorClick={() => {
-                  Toast.fail(errors?.phone?.password, 1);
-                }}
-                moneyKeyboardWrapProps={moneyKeyboardWrapProps}
-              ></InputItem>
-            )}
-          ></Controller>
-        </div>
-        {/* 密码 */}
-        <div className={styles.formItem}>
-          <i className="iconfont icon-mima"></i>
-          <Controller
-            control={control}
-            name="password"
-            rules={{ required: true }}
-            render={({ field }) => (
-              <InputItem
-                type="password"
-                {...field}
-                placeholder="请输入密码"
-                className={styles.phone}
-                clear
-                error={errors?.phone?.password}
-                onErrorClick={() => {
-                  Toast.fail(errors?.phone?.password, 1);
-                }}
-                moneyKeyboardWrapProps={moneyKeyboardWrapProps}
-              ></InputItem>
-            )}
-          ></Controller>
+          {/* 验证码 */}
+          <div className={styles.formItem}>
+            <i className="iconfont icon-yanzhengma"></i>
+            <Controller
+              control={control}
+              name="captcha"
+              rules={{ required: true }}
+              render={({ field }) => (
+                <InputItem
+                  {...field}
+                  placeholder="请输入验证码"
+                  className={styles.captcha}
+                  clear
+                  extra={
+                    <Button
+                      loading={state.codeBtnLoading}
+                      className={styles.captcha_btn}
+                      onClick={sendCaptcha}
+                    >
+                      获取验证码
+                    </Button>
+                  }
+                  error={errors?.phone?.password}
+                  onErrorClick={() => {
+                    Toast.fail(errors?.phone?.password, 1);
+                  }}
+                  moneyKeyboardWrapProps={moneyKeyboardWrapProps}
+                ></InputItem>
+              )}
+            ></Controller>
+          </div>
+          {/* 密码 */}
+          <div className={styles.formItem}>
+            <i className="iconfont icon-mima"></i>
+            <Controller
+              control={control}
+              name="password"
+              rules={{ required: true }}
+              render={({ field }) => (
+                <InputItem
+                  type="password"
+                  {...field}
+                  placeholder="请输入密码"
+                  className={styles.phone}
+                  clear
+                  error={errors?.phone?.password}
+                  onErrorClick={() => {
+                    Toast.fail(errors?.phone?.password, 1);
+                  }}
+                  moneyKeyboardWrapProps={moneyKeyboardWrapProps}
+                ></InputItem>
+              )}
+            ></Controller>
+          </div>
+        </form>
+        <div className={styles.desc_box}>
+          <span>忘记密码？</span>
+          <span className={styles.register_btn}>注册</span>
         </div>
         <Button
+          type="primary"
           className={styles.login_btn}
           onClick={handleSubmit((data) => {
             onSubmit(data);
@@ -220,7 +227,7 @@ function Login(props) {
         >
           {state.phoneUnRegister ? "注册" : "登录"}
         </Button>
-      </form>
+      </div>
     </div>
   );
 }
