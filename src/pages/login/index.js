@@ -116,7 +116,12 @@ function Login(props) {
       phone: phone.replace(/\s*/g, ""),
       password,
     };
-    setState({ state: data });
+    setState((prevState) => {
+      return {
+        ...prevState,
+        ...data,
+      };
+    });
     // 验证验证码
     const res = await captchaVerify();
     if (res && res?.code === 200 && res.data) {
