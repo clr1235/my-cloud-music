@@ -23,4 +23,23 @@ export const loginStatusSlice = createSlice({
   },
 });
 
+// 登录
+export const fetchLogin = createAsyncThunk(
+  "login/fetchLogin",
+  async (params) => {
+    const res = await fetchApi.LoginPageApi.login(params);
+    return res.data;
+  }
+);
+export const login = createSlice({
+  name: "login",
+  initialState,
+  reducers: {},
+  extraReducers: {
+    [fetchLogin.fulfilled]: (state, action) => {
+      return action.payload;
+    },
+  },
+});
+
 export default loginStatusSlice.reducer;

@@ -3,7 +3,9 @@ import { Button, InputItem, Toast } from "antd-mobile";
 import { useForm, Controller } from "react-hook-form";
 
 import fetchApi from "@/api";
+import { fetchLogin } from "@/store/slices/loginSlice";
 import styles from "./index.module.less";
+import { useDispatch } from "react-redux";
 
 // 通过自定义 moneyKeyboardWrapProps 修复虚拟键盘滚动穿透问题
 const isIPhone = new RegExp("\\biPhone\\b|\\biPod\\b", "i").test(
@@ -17,6 +19,7 @@ if (isIPhone) {
 }
 
 function Login(props) {
+  const dispatch = useDispatch();
   // 定义state
   const [state, setState] = useState({
     // 手机号
@@ -77,16 +80,7 @@ function Login(props) {
     const { data } = await fetchApi.LoginPageApi.captchaVerify(fetchData);
     return data;
   };
-  // 登录
-  const login = async () => {
-    const { phone, password } = getValues();
-    const fetchData = {
-      phone: phone.replace(/\s*/g, ""),
-      password,
-    };
-    const res = await fetchApi.LoginPageApi.login(fetchData);
-    console.log(res, "res----");
-  };
+
   // 注册
   const handleRegister = async () => {
     const { captcha, phone, password, nickname } = getValues();
@@ -113,13 +107,22 @@ function Login(props) {
         };
       }
     });
-    console.log(state.mode, "mode=-=-=-");
   };
 
   // 表单提交 分注册和登录
   const onSubmit = async (data) => {
+    const { phone, password } = data;
+    const fetchData = {
+      phone: phone.replace(/\s*/g, ""),
+      password,
+    };
     setState({ state: data });
-    console.log(data, "data=-=-=-=-=");
+    // 验证验证码
+    const res = await captchaVerify();
+    if (res && res?.code === 200 && res.data) {
+      // 登录成功之后将返回的账号信息等存储到store下的login变量中
+      dispatch(fetchLogin(fetchData));
+    }
   };
 
   return (

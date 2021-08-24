@@ -28,6 +28,7 @@ function sendCaptcha(params) {
 
 // 验证验证码
 function captchaVerify(params) {
+  params.timestamp = new Date().valueOf();
   return axiosHttp({
     url: `/captcha/verify`,
     method: "POST",
