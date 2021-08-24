@@ -6,26 +6,42 @@
 
 ## 项目初始化
 1. 在空目录下 执行 `npx create-react-app my-app --template redux`，此命令将会生成一个带有 `reduxToolkit` 的 `create-react-app` 架子的 `my-app` 项目。
-2.
-
-
-
-
-## npm eject之后 按需引入antd-mobile
-1. ```npm install antd-mobile --save```  ```npm install babel-plugin-import --save-dev```
-2. 在package.json文件的 babel 配置项下加入
-```
-    "plugins": [
+2. 项目初始化好之后，我们需要对webpack进行配置，所以需要执行 `yarn eject`。执行完命令之后可以看到项目根目录下多了一个config目录，此目录下就是我们所有的webpack配置。
+3. 在根目录的scripts目录下，找到start.js文件，在其中找到 `const DEFAULT_PORT = parseInt(process.env.PORT, 10)` 此处可以更改我们，开发环境的启动端口。比如：`const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 8888`
+4. `yarn add antd-mobile` 安装ui库，`npm install babel-plugin-import --save-dev`按需引入所需依赖,在package.json文件下配置, 如下代码：
+    ```
+    "babel": {
+    "presets": [
+      "react-app"
+      ],
+      "plugins": [
         [
-            "import",
-            {
+          "import",
+          {
             "libraryName": "antd-mobile",
             "style": "css"
-            }
+          }
         ]
-    ]
+      ]
+    },
+    ```
+    用来支持ui组件的按需引入。
+5. 需要配置支持less的话，需要引入less-loader,然后在webpack.config.js文件中找到原sass-loader的配置位置，复制一份，放到其下面，将相应的test，exclude值改为less对应的值即可。（具体的配置，请看config文件下对应的配置）
+6. 如果需要启用 css-modules的话，直接在项目中创建对应的以 .module.css 或者 .module.less 或者 .module.sass结尾的文件即可。
+7. 在 webpackDevServer.config.js文件中找到proxy，修改其值可以更改跨域代理地址，如下：
 ```
-3. 完成。
+proxy: {
+      "/api": {
+        target: 'https://netease-cloud-music-api-zeta-liart.vercel.app',
+        changeOrigin: true,
+        pathRewrite: {"^/api" : ""}
+      }
+},
+```
+8. husky配置，可以观看这篇文章。[手摸手教你使用最新版husky(v7.0.1)让代码更优雅规范](https://juejin.cn/post/6982192362583752741)
+
+
+****
 ## 在编辑器中进行调试
 1. 根目录下创建 .vscode文件夹
 2. 在.vscode文件夹下创建launch.json文件，并在其内书写如下代码：
