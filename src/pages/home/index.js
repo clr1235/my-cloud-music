@@ -12,7 +12,7 @@ function Home(props) {
   const state = useSelector((state) => {
     return state;
   });
-  console.log(props, "state---store对象");
+  console.log(state, "state---store对象");
   // const dispatch = useDispatch();
 
   return (

@@ -127,6 +127,7 @@ function Login(props) {
     if (res && res?.code === 200 && res.data) {
       // 登录成功之后将返回的账号信息等存储到store下的login变量中
       dispatch(fetchLogin(fetchData));
+      props.history.push("/");
     }
   };
 

@@ -37,6 +37,7 @@ function axiosHttp(axiosConfig) {
   const service = axios.create({
     baseURL: "/api",
     timeout: 30000,
+    withCredentials: true,
     ...axiosConfig,
   });
   // 添加请求拦截器
