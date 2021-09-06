@@ -570,6 +570,7 @@ module.exports = function (webpackEnv) {
                     : isEnvDevelopment,
                   modules: {
                     getLocalIdent: getCSSModuleLocalIdent,
+                    localIdentName: "[path][name]__[local]--[hash:base64:5]",
                   },
                 },
                 'less-loader'
