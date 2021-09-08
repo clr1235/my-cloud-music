@@ -5,16 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import TopNav from "./components/topNav";
 import BottomTabBar from "./components/bottomTabBar";
 
-import fetchApi from "@/api";
-import { fetchLoginStatus } from "@/store/slices/loginSlice";
-
 function Home(props) {
-  const state = useSelector((state) => {
-    return state;
-  });
-  console.log(state, "state---store对象");
-  // const dispatch = useDispatch();
-
   return (
     <Fragment>
       <TopNav />

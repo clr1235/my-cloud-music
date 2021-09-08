@@ -24,11 +24,6 @@ const store = configureAppStore();
 (async function () {
   // 获取登录状态，并将其存储到store中
   await store.dispatch(fetchLoginStatus());
-  // 判断用户是否登录
-  const state = store.getState();
-  if (state.login.account) {
-    // 已经登录，则获取用户信息 将其存储到store中
-  }
 })();
 
 ReactDOM.render(

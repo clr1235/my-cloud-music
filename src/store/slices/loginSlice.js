@@ -1,14 +1,22 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import fetchApi from "@/api";
 
-const initialState = {};
+const initialState = {
+  account: null,
+  profile: null,
+  msg: "",
+};
 
 // 获取登录状态
 export const fetchLoginStatus = createAsyncThunk(
   "login/fetchLoginStatus",
   async () => {
     const res = await fetchApi.LoginPageApi.getLoginStatus();
-    return res.data.data;
+    const obj = {
+      account: res.data.data.account,
+      profile: res.data.data.profile,
+    };
+    return obj;
   }
 );
 
@@ -18,7 +26,8 @@ export const loginStatusSlice = createSlice({
   reducers: {},
   extraReducers: {
     [fetchLoginStatus.fulfilled]: (state, action) => {
-      return action.payload;
+      state.account = action.payload.account;
+      state.profile = action.payload.profile;
     },
   },
 });
@@ -27,19 +36,57 @@ export const loginStatusSlice = createSlice({
 export const fetchLogin = createAsyncThunk(
   "login/fetchLogin",
   async (params) => {
+    // 发送异步请求
     const res = await fetchApi.LoginPageApi.login(params);
+    console.log(res.data, "data=-=-");
     return res.data;
   }
 );
-export const login = createSlice({
+export const loginSlice = createSlice({
   name: "login",
   initialState,
   reducers: {},
+  // 处理异步请求结果
   extraReducers: {
     [fetchLogin.fulfilled]: (state, action) => {
-      return action.payload;
+      console.log(state, "stateAAAAAA---", action);
+      state = action.payload;
     },
   },
+});
+
+// 退出登录
+export const fetchLogout = createAsyncThunk(
+  "login/fetchLogout",
+  async (params) => {
+    const res = await fetchApi.LoginPageApi.logout(params);
+    return res.data;
+  }
+);
+export const logoutSlice = createSlice({
+  name: "logout",
+  initialState,
+  reducers: {},
+  extraReducers: {
+    [fetchLogout.fulfilled]: (state, action) => {
+      console.log(state, "-=-=-=-=-0000");
+      state.account = null;
+      state.profile = null;
+    },
+    [fetchLogout.rejected]: (state, action) => {
+      console.log(state, "-=-=-=-=-0000");
+      state.account = null;
+      state.profile = null;
+    },
+  },
+  // extraReducers: (builder) => {
+  //   console.log(builder, '0-0-0-0-0')
+  //   builder.addCase(fetchLogout.fulfilled, (state, action) => {
+  //     state.account = {};
+  //     state.profile = {};
+  //     state.msg = '退出登录了'
+  //   })
+  // }
 });
 
 export default loginStatusSlice.reducer;

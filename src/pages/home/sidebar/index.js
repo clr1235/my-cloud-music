@@ -1,11 +1,19 @@
 import React, { Fragment } from "react";
 import { useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { unwrapResult } from "@reduxjs/toolkit";
+import Cookies from "js-cookie";
 import classname from "classname";
-import { List, Card, WhiteSpace, Button, WingBlank, Flex } from "antd-mobile";
+import { List, Card, WhiteSpace, Button, WingBlank, Toast } from "antd-mobile";
+
+import { fetchLogout } from "@/store/slices/loginSlice";
 
 import styles from "./index.module.less";
 
-function Sidebar() {
+function Sidebar(props) {
+  const dispatch = useDispatch();
+  // 获取账户信息
+  const loginData = useSelector((state) => state.login);
   const userCenterList = [
     {
       id: "owner",
@@ -75,7 +83,19 @@ function Sidebar() {
   ];
   const history = useHistory();
   const handleClick = () => {
-    history.push("/login");
+    if (!Cookies.get("MUSIC_U")) {
+      history.push("/login");
+    }
+  };
+
+  // 退出登录
+  const handleLogout = async () => {
+    const resultAction = await dispatch(fetchLogout());
+    const originalPromiseResult = unwrapResult(resultAction);
+    if (originalPromiseResult?.code === 200) {
+      Toast.success("退出成功!");
+      props.changeDrawerOpen();
+    }
   };
 
   return (
@@ -84,7 +104,11 @@ function Sidebar() {
         <div className={styles.box} onClick={handleClick}>
           <div className={styles.left}>
             <i className="iconfont icon-Iconly-Bulk-Profile"></i>
-            <span>立即登录</span>
+            <span>
+              {Cookies.get("MUSIC_U")
+                ? loginData?.profile?.nickname
+                : "立即登录"}
+            </span>
           </div>
           <div className={styles.right}>
             <i className="iconfont icon-arrow-right"></i>
@@ -124,7 +148,9 @@ function Sidebar() {
               </Fragment>
             );
           })}
-          <Button className={styles.btn}>退出登录/关闭</Button>
+          <Button className={styles.btn} onClick={handleLogout}>
+            退出登录
+          </Button>
           <WhiteSpace size="lg" />
         </List>
         <WhiteSpace size="lg" />

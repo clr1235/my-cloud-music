@@ -5,7 +5,7 @@ import { useForm, Controller } from "react-hook-form";
 import fetchApi from "@/api";
 import { fetchLogin } from "@/store/slices/loginSlice";
 import styles from "./index.module.less";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 // 通过自定义 moneyKeyboardWrapProps 修复虚拟键盘滚动穿透问题
 const isIPhone = new RegExp("\\biPhone\\b|\\biPod\\b", "i").test(
@@ -20,6 +20,9 @@ if (isIPhone) {
 
 function Login(props) {
   const dispatch = useDispatch();
+  const store = useSelector((state) => {
+    return state;
+  });
   // 定义state
   const [state, setState] = useState({
     // 手机号
@@ -127,6 +130,7 @@ function Login(props) {
     if (res && res?.code === 200 && res.data) {
       // 登录成功之后将返回的账号信息等存储到store下的login变量中
       dispatch(fetchLogin(fetchData));
+      console.log(store, "store-=-=-AAAAA");
       props.history.push("/");
     }
   };

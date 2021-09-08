@@ -54,6 +54,15 @@ function login(params) {
   });
 }
 
+// 退出登录
+function logout(params) {
+  return axiosHttp({
+    url: `/logout`,
+    method: "POST",
+    data: params,
+  });
+}
+
 export default {
   getLoginStatus,
   checkPhone,
@@ -61,4 +70,5 @@ export default {
   captchaVerify,
   register,
   login,
+  logout,
 };
