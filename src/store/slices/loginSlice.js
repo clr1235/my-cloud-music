@@ -26,8 +26,10 @@ export const loginStatusSlice = createSlice({
   reducers: {},
   extraReducers: {
     [fetchLoginStatus.fulfilled]: (state, action) => {
-      state.account = action.payload.account;
-      state.profile = action.payload.profile;
+      return {
+        account: action.payload.account,
+        profile: action.payload.profile,
+      };
     },
   },
 });
@@ -50,7 +52,18 @@ export const loginSlice = createSlice({
   extraReducers: {
     [fetchLogin.fulfilled]: (state, action) => {
       console.log(state, "stateAAAAAA---", action);
-      state = action.payload;
+      return {
+        account: action.payload.account,
+        profile: action.payload.profile,
+        msg: "登录成功",
+      };
+    },
+    [fetchLogin.rejected]: (state, action) => {
+      return {
+        account: null,
+        profile: null,
+        msg: "登录失败",
+      };
     },
   },
 });
@@ -70,13 +83,19 @@ export const logoutSlice = createSlice({
   extraReducers: {
     [fetchLogout.fulfilled]: (state, action) => {
       console.log(state, "-=-=-=-=-0000");
-      state.account = null;
-      state.profile = null;
+      return {
+        account: null,
+        profile: null,
+        msg: "退出登录",
+      };
     },
     [fetchLogout.rejected]: (state, action) => {
       console.log(state, "-=-=-=-=-0000");
-      state.account = null;
-      state.profile = null;
+      return {
+        account: null,
+        profile: null,
+        msg: "退出登录",
+      };
     },
   },
   // extraReducers: (builder) => {
