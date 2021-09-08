@@ -44,6 +44,7 @@ function axiosHttp(axiosConfig) {
   service.interceptors.request.use(
     function (config) {
       // 在发送请求之前做些什么
+      Toast.loading("正在加载...", 0);
       return config;
     },
     function (error) {
@@ -59,6 +60,7 @@ function axiosHttp(axiosConfig) {
       if (response.data.code && response.data.code !== 200) {
         Toast.fail(response.data.message, 3);
       }
+      Toast.hide();
       return response;
     },
     function (error) {
@@ -66,6 +68,7 @@ function axiosHttp(axiosConfig) {
       if (error && error.response) {
         Toast.fail(error.response.data.message, 3);
       }
+      Toast.hide();
       return Promise.resolve(error.response.data);
     }
   );
