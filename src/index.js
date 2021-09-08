@@ -11,7 +11,7 @@ import Router from "./router";
 import reportWebVitals from "./reportWebVitals";
 // 引入全局样式
 import "@/assets/less/global.less";
-import { fetchLoginStatus } from "./store/slices/loginSlice";
+import { fetchLoginStatus } from "./store/slices/login/loginStatusSlice";
 
 /**
  * StrictMode 是一个用来检查项目中潜在问题的工具, 不会渲染任何可见的 UI。

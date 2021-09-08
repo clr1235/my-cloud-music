@@ -3,7 +3,8 @@ import { Button, InputItem, Toast } from "antd-mobile";
 import { useForm, Controller } from "react-hook-form";
 
 import fetchApi from "@/api";
-import { fetchLogin } from "@/store/slices/loginSlice";
+import { fetchLogin } from "@/store/slices/login/loginSlice";
+import { saveLoginData } from "@/store/slices/login/loginStatusSlice";
 import styles from "./index.module.less";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -128,8 +129,9 @@ function Login(props) {
     // 验证验证码
     const res = await captchaVerify();
     if (res && res?.code === 200 && res.data) {
-      // 登录成功之后将返回的账号信息等存储到store下的login变量中
-      dispatch(fetchLogin(fetchData));
+      // 登录成功之后更新store中保存的loginData
+      await dispatch(fetchLogin(fetchData));
+      dispatch(saveLoginData());
       console.log(store, "store-=-=-AAAAA");
       props.history.push("/");
     }

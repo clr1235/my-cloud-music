@@ -6,7 +6,8 @@ import Cookies from "js-cookie";
 import classname from "classname";
 import { List, Card, WhiteSpace, Button, WingBlank, Toast } from "antd-mobile";
 
-import { fetchLogout } from "@/store/slices/loginSlice";
+import { fetchLogout } from "@/store/slices/login/logoutSlice";
+import { clearLoginData } from "@/store/slices/login/loginStatusSlice";
 
 import styles from "./index.module.less";
 
@@ -94,6 +95,7 @@ function Sidebar(props) {
     const originalPromiseResult = unwrapResult(resultAction);
     if (originalPromiseResult?.code === 200) {
       Toast.success("退出成功!");
+      dispatch(clearLoginData());
       props.changeDrawerOpen();
     }
   };
