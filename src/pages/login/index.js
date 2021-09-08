@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Button, InputItem, Toast } from "antd-mobile";
 import { useForm, Controller } from "react-hook-form";
+import { unwrapResult } from "@reduxjs/toolkit";
+import { useDispatch, useSelector } from "react-redux";
 
 import fetchApi from "@/api";
 import { fetchLogin } from "@/store/slices/login/loginSlice";
 import { saveLoginData } from "@/store/slices/login/loginStatusSlice";
 import styles from "./index.module.less";
-import { useDispatch, useSelector } from "react-redux";
 
 // 通过自定义 moneyKeyboardWrapProps 修复虚拟键盘滚动穿透问题
 const isIPhone = new RegExp("\\biPhone\\b|\\biPod\\b", "i").test(
@@ -130,8 +131,10 @@ function Login(props) {
     const res = await captchaVerify();
     if (res && res?.code === 200 && res.data) {
       // 登录成功之后更新store中保存的loginData
-      await dispatch(fetchLogin(fetchData));
-      dispatch(saveLoginData());
+      const resultAction = await dispatch(fetchLogin(fetchData));
+      const originalPromiseResult = unwrapResult(resultAction);
+      // dispatch一个action调用reducer 传进去的数据会存储到action.payload
+      dispatch(saveLoginData(originalPromiseResult));
       console.log(store, "store-=-=-AAAAA");
       props.history.push("/");
     }

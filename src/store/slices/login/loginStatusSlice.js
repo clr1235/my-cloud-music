@@ -21,7 +21,6 @@ export const loginStatusSlice = createSlice({
   initialState,
   reducers: {
     saveLoginData(state, action) {
-      console.log(action, "action-=-=-=-");
       return {
         ...action.payload,
       };
