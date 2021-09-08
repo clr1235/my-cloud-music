@@ -5,7 +5,7 @@ const Home = loadable(() => import("@/pages/home"));
 const Login = loadable(() => import("@/pages/login"));
 const About = loadable(() => import("@/pages/about"));
 const Users = loadable(() => import("@/pages/users"));
-const NotFound = loadable(() => import("@/pages/404"));
+const NotFound = loadable(() => import("@/pages/error/404"));
 
 const allRoutes = [
   {

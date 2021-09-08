@@ -1,6 +1,5 @@
 import { combineReducers } from "@reduxjs/toolkit";
 
-// import findReducer from "./findSlice";
 import loginStatusReducer from "./login/loginStatusSlice";
 
 /**
@@ -9,7 +8,6 @@ import loginStatusReducer from "./login/loginStatusSlice";
  * 并且 state.login 的所有数据都将在 dispatch action 时由 loginReducer 函数更新。
  */
 const rootReducers = combineReducers({
-  // find: findReducer,
   loginData: loginStatusReducer,
 });
 

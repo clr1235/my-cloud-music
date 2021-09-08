@@ -1,5 +1,5 @@
 // 第三方库
-import React from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import "lib-flexible";
