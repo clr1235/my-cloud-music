@@ -14,7 +14,7 @@ import styles from "./index.module.less";
 function Sidebar(props) {
   const dispatch = useDispatch();
   // 获取账户信息
-  const loginData = useSelector((state) => state.login);
+  const loginData = useSelector((state) => state.loginData);
   const userCenterList = [
     {
       id: "owner",
