@@ -1,6 +1,7 @@
 import { combineReducers } from "@reduxjs/toolkit";
 
 import loginStatusReducer from "./login/loginStatusSlice";
+import bannerSlice from "./find/bannerSlice";
 
 /**
  * 这告诉 Redux 我们希望我们的根部 state 对象内部有名为 find 和 login 的字段，
@@ -9,6 +10,7 @@ import loginStatusReducer from "./login/loginStatusSlice";
  */
 const rootReducers = combineReducers({
   loginData: loginStatusReducer,
+  banners: bannerSlice,
 });
 
 export default rootReducers;
